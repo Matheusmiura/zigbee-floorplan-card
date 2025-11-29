@@ -2,34 +2,27 @@
 # Add this to your Lovelace dashboard
 
 type: custom:zigbee-floorplan-card
-entity: sensor.zigbee_coordinator_networkmap  # Your Zigbee network map entity
-image: /local/floorplan.png  # Path to your floorplan image
-image_width: 1000  # Width of your image in pixels
-image_height: 800  # Height of your image in pixels
-# title: Zigbee Network Map  # Optional - leave commented out to hide title
-circle_radius: 10  # Radius of device circles
-show_labels: true  # Show device labels
-show_lqi: true  # Show link quality indicator on connections
-auto_friendly_names: true  # Automatically lookup device names from Home Assistant (default: true)
+entity: sensor.zigbee_coordinator_networkmap  # Your Zigbee network map entity (required)
+image: /local/floorplan.png  # Path to your floorplan image (required)
+image_width: 1000  # Width of your image in pixels (optional, default: 1000)
+image_height: 800  # Height of your image in pixels (optional, default: 800)
+circle_radius: 10  # Radius of device circles (optional, default: 10)
+show_labels: true  # Show device labels (optional, default: true)
+show_link_lqi: false  # Show link quality indicator (LQI value) on connections (optional, default: false)
+mqtt_base_topic: zigbee2mqtt  # MQTT base topic for Zigbee2MQTT (optional, default: 'zigbee2mqtt')
 
 # Friendly names for devices (optional - overrides auto-lookup)
-# The card will automatically find names from Home Assistant entities,
-# but you can override specific devices here if needed
-# Note: If you see 4-digit codes, check browser console (F12) for debug messages
+# The card automatically uses friendly names from the Zigbee2MQTT network map data.
+# Only add entries here if you want to override specific device names.
+# Use IEEE addresses (lowercase) as keys.
 friendly_names:
-  '0xbc026efffe29c7de': 'Main Coordinator'  # Override the auto-detected name
+  '0xbc026efffe29c7de': 'Main Coordinator'
   '0x001788010d5caf75': 'Living Room Router'
   '0x881a14fffefeab2d': 'Kitchen Router'
-  '0x8c65a3fffe1050a0': 'Bedroom Router'
-  '0x70c59cfffef07c24': 'Hallway Router'
-  '0xe4b323fffeb59e74': 'Front Door Sensor'
-  '0xd44867fffefc8124': 'Window Sensor'
-  '0xf84477fffe790717': 'Motion Sensor'
-# Note: You can remove the friendly_names section entirely and the card
-# will automatically use the names you've set in Home Assistant!
 
-# Device coordinates (x, y in pixels)
-# These correspond to the position on your floorplan image
+# Device coordinates (x, y in pixels) - REQUIRED
+# Map each device's IEEE address to its position on your floorplan image.
+# Use lowercase for IEEE addresses to match the code's normalization.
 device_coordinates:
   # Coordinator (center of house)
   '0xbc026efffe29c7de':
