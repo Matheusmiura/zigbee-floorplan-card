@@ -602,54 +602,6 @@ class ZigbeeFloorplanCard extends HTMLElement {
     return svgDevices.join('');
   }
 
-  getUniqueDevices(links) {
-    const deviceMap = new Map();
-
-    links.forEach(link => {
-      if (link.source && link.source.ieeeAddr) {
-        const addr = link.source.ieeeAddr;
-        if (!deviceMap.has(addr)) {
-          deviceMap.set(addr, {
-            ieeeAddr: addr,
-            networkAddress: link.source.networkAddress,
-            depth: link.depth,
-            relationship: link.relationship
-          });
-        }
-      }
-      
-      if (link.target && link.target.ieeeAddr) {
-        const addr = link.target.ieeeAddr;
-        if (!deviceMap.has(addr)) {
-          deviceMap.set(addr, {
-            ieeeAddr: addr,
-            networkAddress: link.target.networkAddress,
-            depth: 0, // Targets are often coordinators
-            relationship: 0
-          });
-        }
-      }
-    });
-
-    return Array.from(deviceMap.values());
-  }
-
-  getDeviceType(device) {
-    // Coordinator: networkAddress = 0 or depth = 0
-    if (device.networkAddress === 0 || device.depth === 0) {
-      return 'coordinator';
-    }
-    
-    // Router: relationship = 2 and has routes (check if device routes to others)
-    // End device: relationship = 1
-    if (device.relationship === 1) {
-      return 'end-device';
-    }
-    
-    // Default to router for relationship = 2
-    return 'router';
-  }
-
   getDeviceLabel(ieeeAddr, friendlyName) {
     // Priority 1: Manual override from config
     if (this._config.friendly_names && this._config.friendly_names[ieeeAddr]) {

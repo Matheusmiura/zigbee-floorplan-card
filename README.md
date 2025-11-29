@@ -63,6 +63,8 @@ See [QUICKSTART.md](docs/QUICKSTART.md) for a step-by-step guide to get started!
 2. Search for "Zigbee Floorplan Card" and install
 3. Add the resource to Lovelace (HACS should do this automatically)
 
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=TheLarsinator&repository=https%3A%2F%2Fgithub.com%2FTheLarsinator%2Fzigbee-floorplan-card%2F)
+
 ### Step 2: Setup MQTT Sensor
 
 Note: If you already use the https://github.com/azuwis/zigbee2mqtt-networkmap card, you already have a compatible entity.
