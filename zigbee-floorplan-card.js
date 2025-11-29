@@ -24,18 +24,55 @@ class ZigbeeFloorplanCard extends HTMLElement {
       throw new Error('You need to define device_coordinates');
     }
     
+    // Validate and sanitize config values
+    const imageWidth = Math.max(1, Math.min(10000, parseInt(config.image_width) || 1000));
+    const imageHeight = Math.max(1, Math.min(10000, parseInt(config.image_height) || 800));
+    const circleRadius = Math.max(1, Math.min(100, parseInt(config.circle_radius) || 10));
+    
     this._config = {
-      entity: config.entity,
-      image: config.image,
+      entity: this._sanitizeString(config.entity),
+      image: this._sanitizeUrl(config.image),
       device_coordinates: config.device_coordinates,
-      image_width: config.image_width || 1000,
-      image_height: config.image_height || 800,
-      circle_radius: config.circle_radius || 10,
+      image_width: imageWidth,
+      image_height: imageHeight,
+      circle_radius: circleRadius,
       show_labels: config.show_labels !== false,
       show_link_lqi: config.show_link_lqi === true,
       friendly_names: config.friendly_names || {},
-      mqtt_base_topic: config.mqtt_base_topic || 'zigbee2mqtt'
+      mqtt_base_topic: this._sanitizeString(config.mqtt_base_topic || 'zigbee2mqtt')
     };
+  }
+
+  _sanitizeString(str) {
+    if (typeof str !== 'string') return '';
+    // Remove potential script tags and other dangerous content
+    return str.replace(/[<>"']/g, (char) => {
+      const entities = {
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      };
+      return entities[char];
+    });
+  }
+
+  _sanitizeUrl(url) {
+    if (typeof url !== 'string') return '';
+    // Only allow safe URL schemes
+    const allowedSchemes = /^(https?:\/\/|\/)/i;
+    if (!allowedSchemes.test(url)) {
+      console.warn('[Zigbee Floorplan] Invalid image URL scheme, using empty string');
+      return '';
+    }
+    return url;
+  }
+
+  _escapeHtml(text) {
+    if (typeof text !== 'string') return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 
   set hass(hass) {
@@ -72,7 +109,7 @@ class ZigbeeFloorplanCard extends HTMLElement {
     if (!entity) {
       this.shadowRoot.innerHTML = `
         <ha-card>
-          <div class="card-content">Entity ${this._config.entity} not found</div>
+          <div class="card-content">Entity ${this._escapeHtml(this._config.entity)} not found</div>
         </ha-card>
       `;
       return;
@@ -112,7 +149,7 @@ class ZigbeeFloorplanCard extends HTMLElement {
         .floorplan-container {
           position: relative;
           width: 100%;
-          max-width: ${this._config.image_width}px;
+          max-width: ${parseInt(this._config.image_width)}px;
           margin: 0 auto;
         }
         .floorplan-image {
@@ -241,8 +278,8 @@ class ZigbeeFloorplanCard extends HTMLElement {
       <ha-card>
         <div class="card-content">
           <div class="floorplan-container">
-            <img src="${this._config.image}" class="floorplan-image" alt="Floorplan" />
-            <svg viewBox="0 0 ${this._config.image_width} ${this._config.image_height}" preserveAspectRatio="xMidYMid meet" id="network-svg">
+            <img src="${this._escapeHtml(this._config.image)}" class="floorplan-image" alt="Floorplan" />
+            <svg viewBox="0 0 ${parseInt(this._config.image_width)} ${parseInt(this._config.image_height)}" preserveAspectRatio="xMidYMid meet" id="network-svg">
               ${this.renderLinks(this._links)}
               ${this.renderDevices(this._nodes)}
             </svg>
@@ -252,12 +289,12 @@ class ZigbeeFloorplanCard extends HTMLElement {
               ${this._refreshing ? 'Refreshing...' : 'Refresh'}
             </button>
             <div class="last-update">
-              ${this._lastUpdate ? `Updated: ${this._lastUpdate}` : 'No data'}
+              ${this._lastUpdate ? `Updated: ${this._escapeHtml(String(this._lastUpdate))}` : 'No data'}
             </div>
             <div class="lqi-filter">
               <label for="lqi-slider">Min LQI:</label>
-              <input type="range" id="lqi-slider" min="0" max="255" value="${this._lqiFilter}" />
-              <span class="lqi-value">${this._lqiFilter}</span>
+              <input type="range" id="lqi-slider" min="0" max="255" value="${parseInt(this._lqiFilter) || 0}" />
+              <span class="lqi-value">${parseInt(this._lqiFilter) || 0}</span>
             </div>
           </div>
         </div>
@@ -533,23 +570,23 @@ class ZigbeeFloorplanCard extends HTMLElement {
 
         svgLinks.push(`
           <line 
-            x1="${sourceCoords.x}" 
-            y1="${sourceCoords.y}" 
-            x2="${targetCoords.x}" 
-            y2="${targetCoords.y}" 
+            x1="${parseFloat(sourceCoords.x)}" 
+            y1="${parseFloat(sourceCoords.y)}" 
+            x2="${parseFloat(targetCoords.x)}" 
+            y2="${parseFloat(targetCoords.y)}" 
             class="${linkClass}" 
-            stroke="${color}"
+            stroke="${this._escapeHtml(color)}"
           />
         `);
 
         if (this._config.show_link_lqi) {
           svgLinks.push(`
             <text 
-              x="${midX}" 
-              y="${midY}" 
+              x="${parseFloat(midX)}" 
+              y="${parseFloat(midY)}" 
               class="lqi-label" 
               text-anchor="middle"
-            >${lqi}</text>
+            >${parseInt(lqi) || 0}</text>
           `);
         }
       }
@@ -574,11 +611,11 @@ class ZigbeeFloorplanCard extends HTMLElement {
         // Draw circle
         svgDevices.push(`
           <circle 
-            cx="${coords.x}" 
-            cy="${coords.y}" 
-            r="${this._config.circle_radius}" 
+            cx="${parseFloat(coords.x)}" 
+            cy="${parseFloat(coords.y)}" 
+            r="${parseInt(this._config.circle_radius)}" 
             class="device-circle ${deviceClass} ${isSelected ? 'selected' : ''}" 
-            data-ieee="${ieeeAddr}"
+            data-ieee="${this._escapeHtml(String(ieeeAddr))}"
           />
         `);
 
@@ -586,14 +623,15 @@ class ZigbeeFloorplanCard extends HTMLElement {
         if (this._config.show_labels) {
           const friendlyName = node.friendlyName || node.friendly_name;
           const label = this.getDeviceLabel(ieeeAddr, friendlyName);
+          const safeLabel = this._escapeHtml(String(label));
           svgDevices.push(`
             <text 
-              x="${coords.x}" 
-              y="${coords.y + this._config.circle_radius + 15}" 
+              x="${parseFloat(coords.x)}" 
+              y="${parseFloat(coords.y) + parseInt(this._config.circle_radius) + 15}" 
               class="device-label" 
               text-anchor="middle"
               style="pointer-events: none;"
-            >${label}</text>
+            >${safeLabel}</text>
           `);
         }
       }
